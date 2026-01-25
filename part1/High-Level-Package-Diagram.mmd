@@ -1,0 +1,50 @@
+classDiagram
+
+%% =========================
+%% Presentation Layer
+%% =========================
+class PresentationLayer {
+  <<Package>>
+  UserController
+  PlaceController
+  ReviewController
+  AmenityController
+}
+
+%% =========================
+%% Facade Interface
+%% =========================
+class HBnBFacade {
+  <<Interface>>
+  +create_user()
+  +get_place()
+  +add_review()
+  +list_amenities()
+}
+
+%% =========================
+%% Business Logic Layer
+%% =========================
+class BusinessLogicLayer {
+  <<Package>>
+  User
+  Place
+  Review
+  Amenity
+}
+
+%% =========================
+%% Persistence Layer
+%% =========================
+class PersistenceLayer {
+  <<Package>>
+  DatabaseAccess
+  Repository
+}
+
+%% =========================
+%% Relationships
+%% =========================
+PresentationLayer --> HBnBFacade : uses
+HBnBFacade --> BusinessLogicLayer : coordinates business logic
+BusinessLogicLayer --> PersistenceLayer : database operations

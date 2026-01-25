@@ -1,0 +1,77 @@
+classDiagram
+
+%% =========================
+%% Base Entity (Common fields)
+%% =========================
+class BaseEntity {
+  <<abstract>>
+  +UUID id
+  +DateTime created_at
+  +DateTime updated_at
+}
+
+%% =========================
+%% User Entity
+%% =========================
+class User {
+  +String email
+  +String first_name
+  +String last_name
+  +create()
+  +update()
+  +delete()
+}
+
+%% =========================
+%% Place Entity
+%% =========================
+class Place {
+  +String name
+  +String description
+  +Float price_per_night
+  +Float latitude
+  +Float longitude
+  +create()
+  +update()
+  +delete()
+}
+
+%% =========================
+%% Review Entity
+%% =========================
+class Review {
+  +String text
+  +Integer rating
+  +create()
+  +update()
+  +delete()
+}
+
+%% =========================
+%% Amenity Entity
+%% =========================
+class Amenity {
+  +String name
+  +create()
+  +update()
+  +delete()
+}
+
+%% =========================
+%% Inheritance
+%% =========================
+User --|> BaseEntity
+Place --|> BaseEntity
+Review --|> BaseEntity
+Amenity --|> BaseEntity
+
+%% =========================
+%% Relationships
+%% =========================
+
+User "1" --> "0..*" Place : owns
+User "1" --> "0..*" Review : writes
+Place "1" --> "0..*" Review : has
+Place "0..*" -- "0..*" Amenity : includes
+Review "1" --> "1" Place : refers to
+Review "1" --> "1" User : written by
