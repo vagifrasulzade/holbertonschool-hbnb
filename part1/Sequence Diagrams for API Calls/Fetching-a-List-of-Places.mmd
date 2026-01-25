@@ -1,0 +1,15 @@
+sequenceDiagram
+    participant User
+    participant API as PresentationLayer(API)
+    participant Facade as HBnBFacade
+    participant PlaceModel as BusinessLogic(Place)
+    participant DB as Persistence(Database)
+
+    User->>API: GET /places?filters
+    API->>Facade: get_places(filters)
+    Facade->>PlaceModel: apply_filters(filters)
+    PlaceModel->>DB: fetch_places(filters)
+    DB-->>PlaceModel: places_list
+    PlaceModel-->>Facade: places_list
+    Facade-->>API: formatted response
+    API-->>User: 200 OK

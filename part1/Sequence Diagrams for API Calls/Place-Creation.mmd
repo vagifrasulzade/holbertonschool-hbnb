@@ -1,0 +1,15 @@
+sequenceDiagram
+    participant User
+    participant API as PresentationLayer(API)
+    participant Facade as HBnBFacade
+    participant PlaceModel as BusinessLogic(Place)
+    participant DB as Persistence(Database)
+
+    User->>API: POST /places
+    API->>Facade: create_place(place_data)
+    Facade->>PlaceModel: validate_place(place_data)
+    PlaceModel->>DB: save(place)
+    DB-->>PlaceModel: place_id
+    PlaceModel-->>Facade: place_created
+    Facade-->>API: success response
+    API-->>User: 201 Created

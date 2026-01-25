@@ -1,0 +1,15 @@
+sequenceDiagram
+    participant User
+    participant API as PresentationLayer(API)
+    participant Facade as HBnBFacade
+    participant ReviewModel as BusinessLogic(Review)
+    participant DB as Persistence(Database)
+
+    User->>API: POST /reviews
+    API->>Facade: add_review(review_data)
+    Facade->>ReviewModel: validate_review(review_data)
+    ReviewModel->>DB: save(review)
+    DB-->>ReviewModel: review_id
+    ReviewModel-->>Facade: review_created
+    Facade-->>API: success response
+    API-->>User: 201 Created
