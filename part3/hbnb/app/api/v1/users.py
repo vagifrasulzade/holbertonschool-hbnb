@@ -9,9 +9,16 @@ user_model = api.model('User', {
     'email': fields.String(required=True, description='Email of the user')
 })
 
+user_registration_model = api.model('UserRegistration', {
+    'first_name': fields.String(required=True, description='First name of the user'),
+    'last_name': fields.String(required=True, description='Last name of the user'),
+    'email': fields.String(required=True, description='Email of the user'),
+    'password': fields.String(required=True, description='Password of the user')
+})
+
 @api.route('/')
 class UserList(Resource):
-    @api.expect(user_model, validate=True)
+    @api.expect(user_registration_model, validate=True)
     @api.response(201, 'User successfully created')
     @api.response(400, 'Email already registered')
     def post(self):
@@ -24,9 +31,7 @@ class UserList(Resource):
         new_user = facade.create_user(user_data)
         return {
             'id': new_user.id,
-            'first_name': new_user.first_name,
-            'last_name': new_user.last_name,
-            'email': new_user.email
+            'message': 'User successfully created'
         }, 201
 
     @api.response(200, 'List of users retrieved successfully')
@@ -72,3 +77,4 @@ class UserResource(Resource):
             'last_name': updated_user.last_name,
             'email': updated_user.email
         }, 200
+

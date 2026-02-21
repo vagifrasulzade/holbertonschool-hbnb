@@ -1,13 +1,15 @@
 from app.models import BaseModel
+from app import bcrypt
 
 class User(BaseModel):
-    def __init__(self, first_name, last_name, email, is_admin=False):
+    def __init__(self, first_name, last_name, email, password, is_admin=False):
         super().__init__()
         # Присваиваем значения через свойства, чтобы сработала валидация
         self.first_name = first_name
         self.last_name = last_name
         self.email = email
         self.is_admin = is_admin
+        self.password = password
 
     @property
     def first_name(self):
@@ -56,3 +58,9 @@ class User(BaseModel):
             super().save()
         else:
             raise ValueError('Invalid Bool Format')
+    
+    def hash_password(self, password):
+        self.password = bcrypt.generate_password_hash(password).decode('utf-8')
+    
+    def verify_password(self, password):
+        return bcrypt.check_password_hash(self.password, password)
